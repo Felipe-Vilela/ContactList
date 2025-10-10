@@ -39,10 +39,10 @@ class MainActivity : AppCompatActivity() {
             contactList.add(
                 Contact(
                     i,
-                    "Name: $1",
-                    "Address: $1",
-                    "Phone: $1",
-                    "Email: $1",
+                    "Name: $i",
+                    "Address: $i",
+                    "Phone: $i",
+                    "Email: $i",
                     )
                 )
         }
