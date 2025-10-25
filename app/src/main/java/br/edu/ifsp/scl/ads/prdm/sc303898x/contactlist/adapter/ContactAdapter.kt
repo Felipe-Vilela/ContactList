@@ -10,7 +10,6 @@ import android.widget.TextView
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.R
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.databinding.TileContactBinding
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Contact
-import org.w3c.dom.Text
 
 class ContactAdapter(context: Context, private val contactList: MutableList<Contact>):
     ArrayAdapter<Contact>(context, R.layout.tile_contact, contactList) {

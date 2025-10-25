@@ -3,8 +3,12 @@ package br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         fillContactList()
 
-        amb.contactTv.adapter = contactAdapter
+        amb.contactLv.adapter = contactAdapter
 
         carl = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result -> if (result.resultCode == RESULT_OK){
@@ -48,12 +52,19 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     result.data?.getParcelableExtra(EXTRA_CONTACT)
                 }
-                contact?.let{ newContact ->
-                    contactList.add(newContact)
+                contact?.let{ receivedContact ->
+                    contactList.add(receivedContact)
                     contactAdapter.notifyDataSetChanged()
                 }
             }
         }
+
+        registerForContextMenu(amb.contactLv)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterForContextMenu(amb.contactLv)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,6 +81,33 @@ class MainActivity : AppCompatActivity() {
             else -> { false }
         }
     }
+
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        menuInflater.inflate(R.menu.context_menu_main, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val position = (item.menuInfo as AdapterView.AdapterContextMenuInfo).position
+
+        return when(item.itemId){
+            R.id.remove_contact_mi -> {
+                contactList.removeAt(position)
+                contactAdapter.notifyDataSetChanged()
+                Toast.makeText(this, "Contact Remove", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.edit_contact_mi -> {
+                Intent(this, ContactActivity::class.java).apply {
+                    putExtra(EXTRA_CONTACT, contactList[position])
+                    carl.launch(this)
+                }
+                true
+            }
+            else -> { false }
+        }
+    }
+
+
     private fun fillContactList(){
         for (i in 1 .. 10){
             contactList.add(

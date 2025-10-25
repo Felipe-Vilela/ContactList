@@ -1,6 +1,7 @@
 package br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.ui
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.R
@@ -19,6 +20,21 @@ class ContactActivity : AppCompatActivity() {
 
         setSupportActionBar(acb.toolbarIn.toolbar)
         supportActionBar?.subtitle = getString(R.string.contact_details)
+
+        val receivedContact = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            intent.getParcelableExtra(EXTRA_CONTACT, Contact::class.java)
+        } else {
+            intent.getParcelableExtra(EXTRA_CONTACT)
+        }
+
+        receivedContact?.let {
+            with(acb){
+                nameEt.setText(it.name)
+                addressEt.setText(it.address)
+                phoneEt.setText(it.phone)
+                emailEt.setText(it.email)
+            }
+        }
 
         with (acb){
             saveBt.setOnClickListener {
