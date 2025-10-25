@@ -16,6 +16,7 @@ import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.R
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.adapter.ContactAdapter
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Constant.EXTRA_CONTACT
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.databinding.ActivityMainBinding
+import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Constant.EXTRA_VIEW_CONTACT
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Contact
 
 class MainActivity : AppCompatActivity() {
@@ -67,6 +68,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         registerForContextMenu(amb.contactLv)
+        amb.contactLv.onItemClickListener = object: AdapterView.OnItemClickListener{
+            override fun onItemClick(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                Intent(this@MainActivity, ContactActivity::class.java).apply {
+                    putExtra(EXTRA_CONTACT, contactList[position])
+                    putExtra(EXTRA_VIEW_CONTACT, true)
+                    startActivity(this)
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -106,6 +121,7 @@ class MainActivity : AppCompatActivity() {
             R.id.edit_contact_mi -> {
                 Intent(this, ContactActivity::class.java).apply {
                     putExtra(EXTRA_CONTACT, contactList[position])
+                    putExtra(EXTRA_VIEW_CONTACT, false)
                     carl.launch(this)
                 }
                 true

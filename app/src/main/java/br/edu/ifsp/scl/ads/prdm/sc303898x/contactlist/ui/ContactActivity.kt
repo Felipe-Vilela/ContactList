@@ -3,10 +3,12 @@ package br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.R
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Constant.EXTRA_CONTACT
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.databinding.ActivityContactBinding
+import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Constant.EXTRA_VIEW_CONTACT
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Contact
 
 class ContactActivity : AppCompatActivity() {
@@ -28,11 +30,21 @@ class ContactActivity : AppCompatActivity() {
         }
 
         receivedContact?.let {
-            with(acb){
+            with(acb) {
                 nameEt.setText(it.name)
                 addressEt.setText(it.address)
                 phoneEt.setText(it.phone)
                 emailEt.setText(it.email)
+
+
+                val viewContact = intent.getBooleanExtra(EXTRA_VIEW_CONTACT, false)
+                if (viewContact) {
+                    nameEt.isEnabled = false
+                    addressEt.isEnabled = false
+                    phoneEt.isEnabled = false
+                    emailEt.isEnabled = false
+                    saveBt.visibility = View.GONE
+                }
             }
         }
 
