@@ -26,10 +26,7 @@ class ContactAdapter(context: Context, private val contactList: MutableList<Cont
                 parent,
                 false).apply {
                     contactTileView = root
-                    val tileContactViewHolder = TileContactViewHolder(
-                        contactTileView.findViewById(R.id.name_tv)!!,
-                        contactTileView.findViewById(R.id.email_tv)!!
-                    )
+                    val tileContactViewHolder = TileContactViewHolder(nameTv, emailTv)
                  contactTileView.tag = tileContactViewHolder
             }
         }
