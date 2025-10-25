@@ -53,7 +53,14 @@ class MainActivity : AppCompatActivity() {
                     result.data?.getParcelableExtra(EXTRA_CONTACT)
                 }
                 contact?.let{ receivedContact ->
-                    contactList.add(receivedContact)
+                    val position = contactList.indexOfFirst { it.id == receivedContact.id }
+                    if (position == -1) {
+                        contactList.add(receivedContact)
+                        Toast.makeText(this, "New Contact", Toast.LENGTH_SHORT).show()
+                    } else{
+                        contactList[position] = receivedContact
+                        Toast.makeText(this, "Contact Edited", Toast.LENGTH_SHORT).show()
+                    }
                     contactAdapter.notifyDataSetChanged()
                 }
             }

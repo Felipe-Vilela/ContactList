@@ -39,7 +39,7 @@ class ContactActivity : AppCompatActivity() {
         with (acb){
             saveBt.setOnClickListener {
                 val contact = Contact(
-                    hashCode(),
+                    receivedContact?.id?:hashCode(),
                     nameEt.text.toString(),
                     addressEt.text.toString(),
                     phoneEt.text.toString(),
