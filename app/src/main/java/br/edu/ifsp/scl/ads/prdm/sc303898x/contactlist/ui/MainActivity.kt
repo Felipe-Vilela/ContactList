@@ -1,16 +1,18 @@
-package br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist
+package br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.ui
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.Constant.EXTRA_CONTACT
+import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.R
+import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.adapter.ContactAdapter
+import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Constant.EXTRA_CONTACT
 import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.databinding.ActivityMainBinding
+import br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.model.Contact
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,13 +24,8 @@ class MainActivity : AppCompatActivity() {
     private val  contactList: MutableList<Contact> = mutableListOf()
 
     //Adapter
-    private val contactAdapter: ArrayAdapter<String> by lazy {
-        ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            contactList.map { "${it.name} - ${it.phone}" }
-        )
-
+    private val contactAdapter: ContactAdapter by lazy {
+        ContactAdapter(this, contactList)
     }
 
     private lateinit var carl: ActivityResultLauncher<Intent>
@@ -38,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(amb.root)
 
         setSupportActionBar(amb.toolbarIn.toolbar)
-        supportActionBar?.subtitle = getString(R.string.list)
+        supportActionBar?.subtitle = getString(br.edu.ifsp.scl.ads.prdm.sc303898x.contactlist.R.string.list)
 
         fillContactList()
 
@@ -51,10 +48,8 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     result.data?.getParcelableExtra(EXTRA_CONTACT)
                 }
-
-                contact?.let{
-                    contactList.add(it)
-                    contactAdapter.add("${contact.name} - ${contact.phone}")
+                contact?.let{ newContact ->
+                    contactList.add(newContact)
                     contactAdapter.notifyDataSetChanged()
                 }
             }
@@ -75,10 +70,8 @@ class MainActivity : AppCompatActivity() {
             else -> { false }
         }
     }
-
-
     private fun fillContactList(){
-        for (i in 1 .. 50){
+        for (i in 1 .. 10){
             contactList.add(
                 Contact(
                     i,
@@ -86,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                     "Address: $i",
                     "Phone: $i",
                     "Email: $i",
-                    )
+                )
                 )
         }
     }
