@@ -38,7 +38,7 @@ class ContactAdapter(context: Context, private val contactList: MutableList<Cont
         tlViewHolder.emailTv.text = contact.email
 
         //Retornar a view preenchida
-        return contactTileView!!
+        return contactTileView
     }
 
     private data class TileContactViewHolder(val nameTv: TextView, val emailTv: TextView)
